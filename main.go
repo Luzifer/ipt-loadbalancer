@@ -9,6 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
+	"github.com/Luzifer/go_helpers/v2/cli"
 	"github.com/Luzifer/rconfig/v2"
 )
 
@@ -20,7 +21,8 @@ var (
 		VersionAndExit     bool   `flag:"version" default:"false" description:"Prints current version and exits"`
 	}{}
 
-	version = "dev"
+	registry = cli.New()
+	version  = "dev"
 )
 
 func initApp() error {
@@ -46,6 +48,16 @@ func main() {
 
 	if cfg.VersionAndExit {
 		logrus.WithField("version", version).Info("ipt-loadbalancer")
+		os.Exit(0)
+	}
+
+	if len(rconfig.Args()) > 1 {
+		if err = registry.Call(rconfig.Args()[1:]); err != nil {
+			if errors.Is(err, cli.ErrHelpCalled) {
+				os.Exit(1)
+			}
+			logrus.WithError(err).Fatal("executing sub-command")
+		}
 		os.Exit(0)
 	}
 

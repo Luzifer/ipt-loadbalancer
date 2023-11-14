@@ -9,6 +9,15 @@ Usage of ipt-loadbalancer:
   -e, --enable-managed-chain   Modify PREROUTING / POSTROUTING chain to contain a jump to managed chain
       --log-level string       Log level (debug, info, warn, error, fatal) (default "info")
       --version                Prints current version and exits
+
+# ipt-loadbalancer help
+Supported sub-commands are:
+  checkhelp <checkType>  Display available settings for a check
+
+# ipt-loadbalancer checkhelp http
+Setting        Default      Description
+code           200          HTTP Status-Code to expect from the request
+...
 ```
 
 ### Main Configuration File
@@ -47,7 +56,8 @@ healthCheck:
   # in parallel
   interval: 2s
   # Settings defines parameters for the given health-check and are
-  # individual to the type.
+  # individual to the type. See the `checkhelp <type>` subcommand for
+  # all supported settings and their default values.
   settings:
     insecureTLS: true
     path: /healthz
