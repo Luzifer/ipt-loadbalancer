@@ -6,6 +6,7 @@ import (
 	"git.luzifer.io/luzifer/ipt-loadbalancer/pkg/config"
 	"git.luzifer.io/luzifer/ipt-loadbalancer/pkg/healthcheck/common"
 	"git.luzifer.io/luzifer/ipt-loadbalancer/pkg/healthcheck/http"
+	"git.luzifer.io/luzifer/ipt-loadbalancer/pkg/healthcheck/smtp"
 	"git.luzifer.io/luzifer/ipt-loadbalancer/pkg/healthcheck/tcp"
 	"github.com/Luzifer/go_helpers/v2/fieldcollection"
 )
@@ -24,6 +25,9 @@ func ByName(name string) Checker {
 	switch name {
 	case "http":
 		return http.New()
+
+	case "smtp":
+		return smtp.New()
 
 	case "tcp":
 		return tcp.New()
