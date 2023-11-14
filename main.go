@@ -14,10 +14,10 @@ import (
 
 var (
 	cfg = struct {
-		Config               string `flag:"config,c" default:"config.yaml" description:"Configuration file to load"`
-		InsertIntoPrerouting bool   `flag:"insert-into-prerouting,i" default:"false" description:"Modify PREROUTING chain to contain a jump to managed chain"`
-		LogLevel             string `flag:"log-level" default:"info" description:"Log level (debug, info, warn, error, fatal)"`
-		VersionAndExit       bool   `flag:"version" default:"false" description:"Prints current version and exits"`
+		Config             string `flag:"config,c" default:"config.yaml" description:"Configuration file to load"`
+		EnableManagedChain bool   `flag:"enable-managed-chain,e" default:"false" description:"Modify PREROUTING / POSTROUTING chain to contain a jump to managed chain"`
+		LogLevel           string `flag:"log-level" default:"info" description:"Log level (debug, info, warn, error, fatal)"`
+		VersionAndExit     bool   `flag:"version" default:"false" description:"Prints current version and exits"`
 	}{}
 
 	version = "dev"
@@ -63,7 +63,7 @@ func main() {
 		logrus.WithError(err).Fatal("creating managed chain")
 	}
 
-	if cfg.InsertIntoPrerouting {
+	if cfg.EnableManagedChain {
 		if err = ipt.EnableMangedRoutingChains(); err != nil {
 			logrus.WithError(err).Fatal("enabling routing")
 		}

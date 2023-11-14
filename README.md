@@ -2,6 +2,15 @@ This repository contains a manager which health-checks given endpoints and gener
 
 ## Configuration
 
+```console
+# ipt-loadbalancer --help
+Usage of ipt-loadbalancer:
+  -c, --config string          Configuration file to load (default "config.yaml")
+  -e, --enable-managed-chain   Modify PREROUTING / POSTROUTING chain to contain a jump to managed chain
+      --log-level string       Log level (debug, info, warn, error, fatal) (default "info")
+      --version                Prints current version and exits
+```
+
 ### Main Configuration File
 
 ```yaml
