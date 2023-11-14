@@ -23,9 +23,9 @@ type (
 	Service struct {
 		Name        string             `yaml:"name"`
 		HealthCheck ServiceHealthCheck `yaml:"healthCheck"`
-		LocalAddr   string             `yaml:"localAddr"`
-		LocalPort   int                `yaml:"localPort"`
-		LocalProto  string             `yaml:"localProto"`
+		BindAddr    string             `yaml:"bindAddr"`
+		BindPort    int                `yaml:"bindPort"`
+		Proto       string             `yaml:"proto"`
 		Targets     []Target           `yaml:"targets"`
 	}
 
@@ -40,9 +40,10 @@ type (
 	// Target represents a load-balancing target to route the traffic
 	// to in case it is deemed alive
 	Target struct {
-		Addr   string `yaml:"addr"`
-		Port   int    `yaml:"port"`
-		Weight int    `yaml:"weight"`
+		Addr      string `yaml:"addr"`
+		LocalAddr string `yaml:"localAddr"`
+		Port      int    `yaml:"port"`
+		Weight    int    `yaml:"weight"`
 	}
 )
 
@@ -73,12 +74,12 @@ func Load(fn string) (cf File, err error) {
 	return cf, nil
 }
 
-// Proto evaluates the LocalProto and returns tcp if empty
-func (s Service) Proto() string {
-	if s.LocalProto == "" {
+// Protocol evaluates the Proto and returns tcp if empty
+func (s Service) Protocol() string {
+	if s.Proto == "" {
 		return "tcp"
 	}
-	return s.LocalProto
+	return s.Proto
 }
 
 func (t Target) String() string { return fmt.Sprintf("%s:%d", t.Addr, t.Port) }

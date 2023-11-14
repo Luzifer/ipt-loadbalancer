@@ -34,8 +34,9 @@ type (
 	// with random distribution and given probability
 	NATTarget struct {
 		Addr      string
+		BindAddr  string
+		BindPort  int
 		LocalAddr string
-		LocalPort int
 		Port      int
 		Proto     string
 		Weight    float64
@@ -182,8 +183,8 @@ func (c *Client) buildServiceTable(service string, cType chainType) (rules [][]s
 				"--probability", strconv.FormatFloat(nt.Weight/weightLeft, 'f', probPrecision, probBitsize),
 
 				"-p", nt.Proto,
-				"-d", nt.LocalAddr,
-				"--dport", strconv.Itoa(nt.LocalPort),
+				"-d", nt.BindAddr,
+				"--dport", strconv.Itoa(nt.BindPort),
 
 				"-j", "DNAT",
 				"--to-destination", fmt.Sprintf("%s:%d", nt.Addr, nt.Port),

@@ -67,11 +67,12 @@ func (m Monitor) updateRoutingTargets(checker healthcheck.Checker) (err error) {
 
 			tgt := iptables.NATTarget{
 				Addr:      t.Addr,
-				LocalAddr: m.svc.LocalAddr,
-				LocalPort: m.svc.LocalPort,
+				BindAddr:  m.svc.BindAddr,
+				BindPort:  m.svc.BindPort,
+				LocalAddr: t.LocalAddr,
 				Port:      t.Port,
 				Weight:    float64(t.Weight),
-				Proto:     m.svc.Proto(),
+				Proto:     m.svc.Protocol(),
 			}
 
 			if err := checker.Check(m.svc.HealthCheck.Settings, t); err != nil {

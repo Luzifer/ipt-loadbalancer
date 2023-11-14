@@ -63,28 +63,34 @@ healthCheck:
     path: /healthz
     tls: true
 
-# Local Address and Port describes the IP and Port to bind the service
-# to. The Address given is used for the SNAT and therefore should for
-# example be the public IP of the machine
-localAddr: 203.0.113.1
-localPort: 443
+# Bind Address and Port describes the IP and Port to bind the service
+# to.
+bindAddr: 203.0.113.1
+bindPort: 443
+
+# Proto describes which protocol should be routed (defaults to tcp)
+proto: tcp
 
 # Targets is a list of routing targets which are checked for their
 # liveness status and if they are live, they are included in the NAT
 # rulesets.
-# Each target consists of an Address, a Port and a Weight. The weight
+# Each target consists of two Addresses, a Port and a Weight. The weight
 # is defined as an integer and increases / decreases the percentage
 # of the traffic that specific target will receive. (For example
 # setting all weights to 1 will distribute the traffic equally between
 # them, setting one to 2 will double the traffic to that target.)
+# The localAddr is used for the SNAT to map the source IP.
 targets:
   - addr: 10.1.2.4
+    localAddr: 10.1.2.1
     port: 443
     weight: 1
   - addr: 10.1.2.5
+    localAddr: 10.1.2.1
     port: 443
     weight: 1
   - addr: 10.1.2.6
+    localAddr: 10.1.2.1
     port: 443
     weight: 1
 ```
