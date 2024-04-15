@@ -1,3 +1,7 @@
+# 0.4.0 / 2024-04-15
+
+  * Improve logging for up/down changes
+
 # 0.3.0 / 2024-04-15
 
   * Add support for hostnames in addresses
