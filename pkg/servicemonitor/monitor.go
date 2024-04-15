@@ -76,14 +76,24 @@ func (m Monitor) updateRoutingTargets(checker healthcheck.Checker) (err error) {
 			}
 
 			if err := checker.Check(m.svc.HealthCheck.Settings, t); err != nil {
-				logger.WithError(err).Debug("detected target down")
-				changed = changed || m.ipt.UnregisterServiceTarget(m.svc.Name, tgt)
+				if m.ipt.UnregisterServiceTarget(m.svc.Name, tgt) {
+					logger.WithError(err).Warn("detected target down")
+					changed = true
+				} else {
+					logger.WithError(err).Debug("detected target down")
+				}
+
 				down = append(down, t.String())
 				return
 			}
 
-			logger.Debug("target up")
-			changed = changed || m.ipt.RegisterServiceTarget(m.svc.Name, tgt)
+			if m.ipt.RegisterServiceTarget(m.svc.Name, tgt) {
+				logger.Info("target up")
+				changed = true
+			} else {
+				logger.Debug("target up")
+			}
+
 			up = append(up, t.String())
 		}()
 	}
